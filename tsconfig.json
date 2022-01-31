@@ -25,7 +25,9 @@
       "@/Types/*": ["./types/*"],
       "@/Types": ["./types"],
       "@/Utils/*": ["./utils/*"],
-      "@/Utils": ["./utils"]
+      "@/Utils": ["./utils"],
+      "@/Helpers/*": ["./helpers/*"],
+      "@/Helpers": ["./helpers"]
     }
   },
   "include": ["./src", "./declarations.d.ts"]
