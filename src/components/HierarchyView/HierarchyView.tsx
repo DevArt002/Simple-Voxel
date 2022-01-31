@@ -44,7 +44,7 @@ const HierarchyView: FC<IHierarchyViewProps> = ({ className, style, ...rest }) =
 
   return (
     <div className={`${s.hierarchyView} ${className}`} style={style} {...rest}>
-      <TreeMenu data={data} />
+      <TreeMenu data={data} activeKey=" " />
     </div>
   );
 };

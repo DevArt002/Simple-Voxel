@@ -14,7 +14,7 @@ export class Interactor {
   private camera: Camera; // Camera
   private mouse: Vector2; // Vector2 for tracking mouse position
   private raycaster: Raycaster; // Raycaster object
-  private isDown: boolean; // Mouse down state
+  private isMoved: boolean; // Mouse moved state
 
   constructor(container: HTMLDivElement, camera: Camera) {
     this.container = container;
@@ -23,7 +23,7 @@ export class Interactor {
     this.hovObjects = [];
     this.mouse = new Vector2();
     this.raycaster = new Raycaster();
-    this.isDown = false;
+    this.isMoved = false;
 
     this.init();
   }
@@ -56,92 +56,39 @@ export class Interactor {
   /**
    * Mouse down event listener
    */
-  onPointerDown = (evt: PointerEvent) => {
-    this.isDown = true;
+  onPointerDown = () => {
+    this.isMoved = false;
 
-    const intersect = this.getIntersection(evt);
-    // console.warn('DOWN POINTER: ', intersect);
-
-    const intersectObjName = intersect?.object?.name;
-
-    // Dispatch events corresponding to object
-    // if (
-    //   intersectObjName === MESH_NAMES.RAY_RECEIVER
-    // ) {
-    //   dispatcher.dispatchEvent({
-    //     type: Events.STUDIO_2D_DRAW_LAYOUT_DOWN,
-    //     intersect,
-    //   });
-    // } else if (intersectObjName === MESH_NAMES.STUDIO_2D_PRODUCT_MOVE_ICON) {
-    //   dispatcher.dispatchEvent({
-    //     type: Events.STUDIO_2D_PRODUCT_MOVE_ICON_DOWN,
-    //   });
-    // } else if (intersectObjName === MESH_NAMES.STUDIO_2D_PRODUCT_ROTATE_ICON) {
-    //   dispatcher.dispatchEvent({
-    //     type: Events.STUDIO_2D_PRODUCT_ROTATE_ICON_DOWN,
-    //   });
-    // } else {
-    //   dispatcher.dispatchEvent({
-    //     type: Events.POINTER_DOWN,
-    //   });
-    // }
+    // TODO Actions for mouse down
   };
 
   /**
    * Mouse move event listener
    */
   onPointerMove = (evt: PointerEvent) => {
-    // if (!this.isDown) return;
+    this.isMoved = true;
 
     const intersect = this.getIntersection(evt);
-    // console.warn('MOVE POINTER: ', intersect);
-
     const intersectedObj = intersect?.object;
     const intersectObjName = intersectedObj?.name;
 
-    // Dispatch events corresponding to object
     // Hover or not
     if (intersectObjName && this.hovObjects.some((item) => item === intersectedObj)) {
       this.changePointer(EPointer.POINTER);
     } else {
       this.changePointer(EPointer.AUTO);
     }
-
-    //   if (
-    //     intersectObjName === MESH_NAMES.STUDIO_2D_DRAW_RAYCAST_PLANE ||
-    //     intersectObjName === MESH_NAMES.STUDIO_2D_WALL ||
-    //     intersectObjName === MESH_NAMES.STUDIO_2D_START_WALL_CORNER
-    //   ) {
-    //     dispatcher.dispatchEvent({
-    //       type: Events.STUDIO_2D_DRAW_LAYOUT_MOVE,
-    //       intersect,
-    //       isDown: this.isDown,
-    //     });
-    //   } else if (intersectObjName === MESH_NAMES.STUDIO_2D_DRAG_RAYCAST_PLANE) {
-    //     dispatcher.dispatchEvent({
-    //       type: Events.STUDIO_2D_DRAG_MOVE,
-    //       intersect,
-    //     });
-    //   } else {
-    //     dispatcher.dispatchEvent({
-    //       type: Events.POINTER_MOVE,
-    //     });
-    //   }
   };
 
   /**
    * Mouse up event listener
    */
   onPointerUp = (evt: PointerEvent) => {
-    this.isDown = false;
-
     const intersect = this.getIntersection(evt);
-    // console.warn('UP POINTER: ', intersect);
-
     const intersectObjName = intersect?.object?.name;
 
     // Dispatch events corresponding to object
-    if (intersectObjName === MESH_NAMES.RAY_RECEIVER) {
+    if (!this.isMoved && intersectObjName === MESH_NAMES.RAY_RECEIVER) {
       dispatcher.dispatchEvent({
         type: Events.ADD_MESH,
         intersect,

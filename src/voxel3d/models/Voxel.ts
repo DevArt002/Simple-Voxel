@@ -14,26 +14,30 @@ import {
 // Helpers
 import { disposeObject } from '@/Voxel3D/helpers';
 // Types
-import { EMeshType, ETransDir, TVelDir, TMeshTypeOption } from '@/Types';
+import { EMeshType, ETransDir, TVelDir, TMeshTypeOption, ERotDir } from '@/Types';
 
 export class Voxel extends Mesh {
   private option: TMeshTypeOption; // Mesh options involving mesh type and color
   private initPos: number[]; // Initial position
-  private initVelDirs: TVelDir; // Initial velocity direction
-  private initVel: number; // Initial velocity scalar
+  private initTransDirs: TVelDir; // Initial velocity direction
+  private initRotAxis: Vector3; // Initial rotation axis
+  private initTransVel: number; // Initial velocity scalar
+  private initRotVel: number; // Initial velocity scalar
 
   constructor(option: TMeshTypeOption, initPos: number[] = [0, 0, 0]) {
     super();
 
     this.option = option;
     this.initPos = initPos;
-    this.initVelDirs = {
+    this.initTransDirs = {
       [ETransDir.UP]: new Vector3(0, 1, 0),
       [ETransDir.DOWN]: new Vector3(0, -1, 0),
       [ETransDir.LEFT]: new Vector3(-1, 0, 0),
       [ETransDir.RIGHT]: new Vector3(1, 0, 0),
     };
-    this.initVel = 0.01;
+    this.initRotAxis = new Vector3(0, 0, 1);
+    this.initTransVel = 0.01;
+    this.initRotVel = Math.PI / 180; // 1 degree
 
     this.init();
   }
@@ -66,16 +70,28 @@ export class Voxel extends Mesh {
   }
 
   /**
-   * Translate mesh with velocity
+   * Translate mesh
    */
   translate = (matrix: Matrix4, direction?: ETransDir) => {
     if (!direction) return;
 
     const quaternion = new Quaternion().setFromRotationMatrix(matrix);
-    const velDir = this.initVelDirs[direction].clone().applyQuaternion(quaternion);
-    const vel = velDir.multiplyScalar(this.initVel);
+    const velDir = this.initTransDirs[direction].clone().applyQuaternion(quaternion);
+    const vel = velDir.multiplyScalar(this.initTransVel);
 
     this.position.add(vel);
+  };
+
+  /**
+   * Rotate mesh
+   */
+  rotate = (matrix: Matrix4, direction?: ERotDir) => {
+    if (!direction) return;
+
+    const quaternion = new Quaternion().setFromRotationMatrix(matrix);
+    const axis = this.initRotAxis.clone().applyQuaternion(quaternion);
+
+    this.rotateOnAxis(axis, direction === ERotDir.LEFT ? this.initRotVel : -this.initRotVel);
   };
 
   /**

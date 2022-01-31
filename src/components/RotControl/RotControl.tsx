@@ -18,7 +18,7 @@ const RotControl: FC<IRotControlProps> = ({ className, style, ...rest }) => {
 
     // Dispatch event for rotating current mesh
     dispatcher.dispatchEvent({
-      type: Events.TRANSLATE_MESH,
+      type: Events.ROTATE_MESH,
       direction,
     });
   }, []);

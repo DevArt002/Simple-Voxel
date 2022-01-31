@@ -75,9 +75,4 @@
   &:hover .dropBtn {
     background: #1babe4;
   }
-
-  &:active .dropdownContent {
-    opacity: 0;
-    pointer-events: none;
-  }
 }

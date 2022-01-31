@@ -22,10 +22,7 @@ const Dropdown: FC<IDropdownProps> = ({ className, style, onChange, value, optio
       <button className={s.dropBtn}>{generatBtnConent(options[value])}</button>
       <div className={s.dropdownContent}>
         {options.map((option, index) => (
-          <button
-            key={`option-${index}`}
-            className={s.optionBtn}
-            onMouseDown={() => onChange(index)}>
+          <button key={`option-${index}`} className={s.optionBtn} onClick={() => onChange(index)}>
             {generatBtnConent(option)}
           </button>
         ))}

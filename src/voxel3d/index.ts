@@ -13,7 +13,6 @@ import {
   Event,
 } from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
-import gsap from 'gsap';
 // Helpers
 import { dispatcher, Events, Interactor } from './helpers';
 // Models
@@ -39,6 +38,8 @@ export class Voxel3D {
   private interactor!: Interactor; // Interaction helper
   private meshTypeOption: TMeshTypeOption | null; // Mesh option
   private activeMesh: Voxel | undefined; // Active mesh
+  private disposed: boolean; // Flag of disposal state
+  private requestID: number; // Frame number
 
   constructor(container: HTMLDivElement) {
     this.container = container;
@@ -48,6 +49,8 @@ export class Voxel3D {
     this.aspect = this.width / this.height;
     this.meshTypeOption = null;
     this.activeMesh = undefined;
+    this.disposed = false;
+    this.requestID = 0;
 
     this.init();
   }
@@ -63,7 +66,7 @@ export class Voxel3D {
     this.initInteractor();
     this.initEventListeners();
 
-    gsap.ticker.add(this.tick); // Sync rendering with gsap tick
+    this.tick();
   }
 
   /**
@@ -249,7 +252,7 @@ export class Voxel3D {
    * Rotate listener
    */
   onRotate = (e: Event) => {
-    // this.activeMesh?.translate(this.camera.matrix, e?.direction);
+    this.activeMesh?.rotate(this.camera.matrix, e?.direction);
   };
 
   /**
@@ -285,15 +288,23 @@ export class Voxel3D {
    * Tick
    */
   tick = () => {
+    if (this.disposed) {
+      window.cancelAnimationFrame(this.requestID);
+
+      return;
+    }
+
     this.render();
     this.controls.update();
+
+    this.requestID = window.requestAnimationFrame(this.tick);
   };
 
   /**
    * Dispose
    */
   dispose() {
-    gsap.ticker.remove(this.tick);
+    this.disposed = true;
     this.disposeEventListeners();
     this.controls.dispose();
     (this.meshGroup.children as Voxel[]).forEach((child) => child.dispose());
