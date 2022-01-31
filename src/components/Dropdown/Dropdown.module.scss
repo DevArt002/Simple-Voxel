@@ -1,0 +1,80 @@
+.dropdown {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  height: fit-content;
+
+  & button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    background: #dddddd;
+    color: black;
+    border: 0.2px solid #eeeeee;
+  }
+
+  & button,
+  & button * {
+    cursor: pointer;
+  }
+
+  & .dropBtn span,
+  & .optionBtn span {
+    width: 10px;
+    height: 10px;
+    margin: 0 10px 0 0;
+  }
+
+  & .dropBtn label,
+  & .optionBtn label {
+    text-transform: capitalize;
+  }
+
+  & .dropBtn {
+    width: 100%;
+    height: 40px;
+    background: #4c6faf;
+    color: white;
+    border: none;
+  }
+
+  & .dropdownContent {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    background: #dddddd;
+    min-width: 160px;
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    transition: opacity 0.5s;
+    opacity: 0;
+    pointer-events: none;
+
+    & .optionBtn {
+      justify-content: flex-start;
+      width: 100%;
+      height: 35px;
+      padding: 10px;
+
+      &:hover {
+        background: #eeeeee;
+      }
+    }
+  }
+
+  &:hover .dropdownContent {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  &:hover .dropBtn {
+    background: #3b5a94;
+  }
+
+  &:active .dropdownContent {
+    opacity: 0;
+    pointer-events: none;
+  }
+}

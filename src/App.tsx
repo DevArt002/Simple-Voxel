@@ -1,10 +1,16 @@
-import React from 'react';
+import React, { useRef } from 'react';
+// Components
+import { Panel } from '@/Components';
+// Style
 import s from './App.module.scss';
 
 function App() {
+  const canvasContainerRef = useRef<HTMLDivElement | null>(null);
+
   return (
     <div className={s.app}>
-      <h1>React Vite Bolierplate</h1>
+      <div ref={canvasContainerRef} className={s.canvasContainer} />
+      <Panel />
     </div>
   );
 }
