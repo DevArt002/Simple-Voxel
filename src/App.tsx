@@ -1,22 +1,24 @@
 import React, { useRef, useEffect } from 'react';
 // Components
-import { Panel } from '@/Components';
+import { Panel, HierarchyView } from '@/Components';
 // Voxel 3D
 import Voxel3D from '@/Voxel3D';
-// Style
+// Styles
 import s from './App.module.scss';
 
 function App() {
   const voxel3DContainerRef = useRef<HTMLDivElement | null>(null);
   const voxel3DInstanceRef = useRef<Voxel3D | null>(null);
 
-  // Initialize voxel 3d instance when 2d component is rendererd
+  // Process right after component is mounted
   useEffect(() => {
+    // Instantiate voxel3d
     if (voxel3DContainerRef.current) {
       voxel3DInstanceRef.current = new Voxel3D(voxel3DContainerRef.current);
     }
 
     return () => {
+      // Dispose voxel3d instance
       voxel3DInstanceRef.current?.dispose();
     };
   }, []);
@@ -24,6 +26,7 @@ function App() {
   return (
     <div className={s.app}>
       <div ref={voxel3DContainerRef} className={s.canvasContainer} />
+      <HierarchyView />
       <Panel />
     </div>
   );

@@ -13,6 +13,8 @@ import {
 } from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import gsap from 'gsap';
+// Utils
+import { dispatcher, Events } from './helpers';
 
 export default class Voxel3D {
   private container: HTMLDivElement; // Div element for enveloping canvas
@@ -82,6 +84,7 @@ export default class Voxel3D {
     this.addLights();
     this.addGrid();
     this.addRest();
+    this.hierarchyUpdated();
   }
 
   /**
@@ -171,6 +174,16 @@ export default class Voxel3D {
   };
 
   /**
+   * Dispatch hierarchy updated event
+   */
+  hierarchyUpdated() {
+    dispatcher.dispatchEvent({
+      type: Events.HIERARCHY_UPDATE,
+      scene: this.scene,
+    });
+  }
+
+  /**
    * Render
    */
   render() {
@@ -194,3 +207,5 @@ export default class Voxel3D {
     this.controls.dispose();
   }
 }
+
+export * from './helpers';

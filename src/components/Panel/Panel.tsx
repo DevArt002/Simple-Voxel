@@ -5,7 +5,7 @@ import { Dropdown } from '@/Components';
 import { IPanelProps } from './Panel.d';
 // Constants
 import { MESH_OPTIONS } from '@/Constants';
-// Style
+// Styles
 import s from './Panel.module.scss';
 
 const Panel: FC<IPanelProps> = ({ className, style, ...rest }) => {

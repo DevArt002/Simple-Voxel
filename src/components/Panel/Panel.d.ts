@@ -1,6 +1,3 @@
-import { CSSProperties } from 'react';
+import { ICommonComponentProps } from '@/Types';
 
-export interface IPanelProps {
-  className?: string;
-  style?: CSSProperties;
-}
+export interface IPanelProps extends ICommonComponentProps {}

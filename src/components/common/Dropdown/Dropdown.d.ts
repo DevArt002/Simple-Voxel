@@ -1,13 +1,11 @@
-import { CSSProperties } from 'react';
+import { ICommonComponentProps } from '@/Types';
 
 export type TDropdownOption = {
   color: string;
   mesh: string;
 };
 
-export interface IDropdownProps {
-  className?: string;
-  style?: CSSProperties;
+export interface IDropdownProps extends ICommonComponentProps {
   onChange: (active: number) => void;
   value: number;
   options: TDropdownOption[];

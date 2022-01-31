@@ -1,7 +1,7 @@
 import React, { FC, memo, useCallback } from 'react';
 // Types
 import { IDropdownProps, TDropdownOption } from './Dropdown.d';
-// Style
+// Styles
 import s from './Dropdown.module.scss';
 
 const Dropdown: FC<IDropdownProps> = ({ className, style, onChange, value, options, ...rest }) => {
