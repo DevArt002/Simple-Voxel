@@ -1,9 +1,9 @@
 import React from 'react';
-import './App.scss';
+import s from './App.module.scss';
 
 function App() {
   return (
-    <div className="App">
+    <div className={s.app}>
       <h1>React Vite Bolierplate</h1>
     </div>
   );
