@@ -27,7 +27,9 @@
       "@/Utils/*": ["./utils/*"],
       "@/Utils": ["./utils"],
       "@/Helpers/*": ["./helpers/*"],
-      "@/Helpers": ["./helpers"]
+      "@/Helpers": ["./helpers"],
+      "@/Voxel3D/*": ["./voxel3d/*"],
+      "@/Voxel3D": ["./voxel3d"]
     }
   },
   "include": ["./src", "./declarations.d.ts"]
