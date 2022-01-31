@@ -22,6 +22,8 @@
       "@/Components": ["./components"],
       "@/Constants/*": ["./constants/*"],
       "@/Constants": ["./constants"],
+      "@/Hooks/*": ["./hooks/*"],
+      "@/Hooks": ["./hooks"],
       "@/Types/*": ["./types/*"],
       "@/Types": ["./types"],
       "@/Utils/*": ["./utils/*"],

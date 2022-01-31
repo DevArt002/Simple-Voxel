@@ -1,0 +1,14 @@
+.button {
+  position: relative;
+  width: 80px;
+  padding: 10px;
+  background: #179ed3;
+  border: none;
+  outline: none;
+  color: white;
+  cursor: pointer;
+
+  &:hover {
+    background: #1babe4;
+  }
+}

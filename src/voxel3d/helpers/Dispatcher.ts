@@ -7,4 +7,5 @@ export enum Events {
   HIERARCHY_UPDATED = 'hierarchyUpdated',
   MESH_TYPE_UPDATED = 'meshTypeUpdated',
   ADD_MESH = 'addMesh',
+  TRANSLATE_MESH = 'translateMesh',
 }

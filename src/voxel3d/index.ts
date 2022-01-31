@@ -38,6 +38,7 @@ export class Voxel3D {
   private meshGroup!: Group; // Group for involving primitive meshes
   private interactor!: Interactor; // Interaction helper
   private meshTypeOption: TMeshTypeOption | null; // Mesh option
+  private activeMesh: Voxel | null; // Active mesh
 
   constructor(container: HTMLDivElement) {
     this.container = container;
@@ -46,6 +47,7 @@ export class Voxel3D {
     this.height = container.offsetHeight;
     this.aspect = this.width / this.height;
     this.meshTypeOption = null;
+    this.activeMesh = null;
 
     this.init();
   }
@@ -128,6 +130,7 @@ export class Voxel3D {
     window.addEventListener('resize', this.onWindowResize, false);
     dispatcher.addEventListener(Events.MESH_TYPE_UPDATED, this.onMeshTypeUpdated);
     dispatcher.addEventListener(Events.ADD_MESH, this.onAddMesh);
+    dispatcher.addEventListener(Events.TRANSLATE_MESH, this.onTranslate);
   };
 
   /**
@@ -137,6 +140,7 @@ export class Voxel3D {
     window.removeEventListener('resize', this.onWindowResize, false);
     dispatcher.removeEventListener(Events.MESH_TYPE_UPDATED, this.onMeshTypeUpdated);
     dispatcher.removeEventListener(Events.ADD_MESH, this.onAddMesh);
+    dispatcher.removeEventListener(Events.TRANSLATE_MESH, this.onTranslate);
   };
 
   /**
@@ -226,7 +230,15 @@ export class Voxel3D {
     const mesh = new Voxel(this.meshTypeOption, intersectPoint);
 
     this.meshGroup.add(mesh);
+    this.activeMesh = mesh;
     this.hierarchyUpdated();
+  };
+
+  /**
+   * Translate listener
+   */
+  onTranslate = (e: Event) => {
+    this.activeMesh?.translate(this.camera.matrix, e?.direction);
   };
 
   /**
@@ -251,6 +263,7 @@ export class Voxel3D {
     gsap.ticker.remove(this.tick);
     this.disposeEventListeners();
     this.controls.dispose();
+    (this.meshGroup.children as Voxel[]).forEach((child) => child?.dispose());
   }
 }
 

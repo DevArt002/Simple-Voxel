@@ -1,0 +1,14 @@
+.translator {
+  position: relative;
+  height: fit-content;
+
+  & .row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    & .translateBtn {
+      margin: 10px;
+    }
+  }
+}
