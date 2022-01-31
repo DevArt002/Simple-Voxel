@@ -1,12 +1,7 @@
-import { ICommonComponentProps } from '@/Types';
-
-export type TDropdownOption = {
-  color: string;
-  mesh: string;
-};
+import { ICommonComponentProps, TMeshTypeOption } from '@/Types';
 
 export interface IDropdownProps extends ICommonComponentProps {
   onChange: (active: number) => void;
   value: number;
-  options: TDropdownOption[];
+  options: TMeshTypeOption[];
 }

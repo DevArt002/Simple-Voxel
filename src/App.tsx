@@ -2,7 +2,7 @@ import React, { useRef, useEffect } from 'react';
 // Components
 import { Panel, HierarchyView } from '@/Components';
 // Voxel 3D
-import Voxel3D from '@/Voxel3D';
+import { Voxel3D } from '@/Voxel3D';
 // Styles
 import s from './App.module.scss';
 

@@ -4,5 +4,7 @@ import { EventDispatcher } from 'three';
 export const dispatcher = new EventDispatcher();
 
 export enum Events {
-  HIERARCHY_UPDATE = 'hierarchyUpdate',
+  HIERARCHY_UPDATED = 'hierarchyUpdated',
+  MESH_TYPE_UPDATED = 'meshTypeUpdated',
+  ADD_MESH = 'addMesh',
 }

@@ -1,25 +1,28 @@
-import { TDropdownOption } from '@/Components';
-import { EMesh, EColor } from '@/Types';
+import { EMeshType, EColor, TMeshTypeOption } from '@/Types';
 
-export const MESH_OPTIONS: TDropdownOption[] = [
+export const MESH_TYPE_OPTIONS: TMeshTypeOption[] = [
   {
     color: EColor.RED,
-    mesh: EMesh.BOX,
+    mesh: EMeshType.BOX,
   },
   {
     color: EColor.GREEN,
-    mesh: EMesh.CONE,
+    mesh: EMeshType.CONE,
   },
   {
     color: EColor.BLUE,
-    mesh: EMesh.Cylinder,
+    mesh: EMeshType.Cylinder,
   },
   {
     color: EColor.YELLOW,
-    mesh: EMesh.SPHERE,
+    mesh: EMeshType.SPHERE,
   },
   {
     color: EColor.PINK,
-    mesh: EMesh.DODECAHEDRON,
+    mesh: EMeshType.DODECAHEDRON,
   },
 ];
+
+export enum MESH_NAMES {
+  RAY_RECEIVER = 'rayReceiver',
+}

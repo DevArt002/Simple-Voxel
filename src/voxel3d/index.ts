@@ -10,13 +10,20 @@ import {
   AmbientLight,
   PlaneBufferGeometry,
   Mesh,
+  Event,
 } from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import gsap from 'gsap';
-// Utils
-import { dispatcher, Events } from './helpers';
+// Helpers
+import { dispatcher, Events, Interactor } from './helpers';
+// Models
+import { Voxel } from './models';
+// Types
+import { TMeshTypeOption } from '@/Types';
+// Constants
+import { MESH_NAMES } from '@/Constants';
 
-export default class Voxel3D {
+export class Voxel3D {
   private container: HTMLDivElement; // Div element for enveloping canvas
   private width: number; // Canvas width
   private height: number; // Canvas height
@@ -29,6 +36,8 @@ export default class Voxel3D {
   private gridHelper!: GridHelper; // Grid helper
   private rayReceiver!: Mesh; // Plane for receiving ray
   private meshGroup!: Group; // Group for involving primitive meshes
+  private interactor!: Interactor; // Interaction helper
+  private meshTypeOption: TMeshTypeOption | null; // Mesh option
 
   constructor(container: HTMLDivElement) {
     this.container = container;
@@ -36,6 +45,7 @@ export default class Voxel3D {
     this.width = container.offsetWidth;
     this.height = container.offsetHeight;
     this.aspect = this.width / this.height;
+    this.meshTypeOption = null;
 
     this.init();
   }
@@ -48,6 +58,7 @@ export default class Voxel3D {
     this.initScene();
     this.initHierarchy();
     this.initController();
+    this.initInteractor();
     this.initEventListeners();
 
     gsap.ticker.add(this.tick); // Sync rendering with gsap tick
@@ -102,10 +113,21 @@ export default class Voxel3D {
   }
 
   /**
+   * Initialize interactor
+   */
+  initInteractor() {
+    this.interactor = new Interactor(this.container, this.camera);
+
+    this.interactor.add(this.rayReceiver);
+  }
+
+  /**
    * Initialize event listeners
    */
   initEventListeners = () => {
     window.addEventListener('resize', this.onWindowResize, false);
+    dispatcher.addEventListener(Events.MESH_TYPE_UPDATED, this.onMeshTypeUpdated);
+    dispatcher.addEventListener(Events.ADD_MESH, this.onAddMesh);
   };
 
   /**
@@ -113,6 +135,8 @@ export default class Voxel3D {
    */
   disposeEventListeners = () => {
     window.removeEventListener('resize', this.onWindowResize, false);
+    dispatcher.removeEventListener(Events.MESH_TYPE_UPDATED, this.onMeshTypeUpdated);
+    dispatcher.removeEventListener(Events.ADD_MESH, this.onAddMesh);
   };
 
   /**
@@ -152,12 +176,23 @@ export default class Voxel3D {
     this.rayReceiver = new Mesh(rayReceiverGeo);
     this.rayReceiver.rotateX(-Math.PI / 2);
     this.rayReceiver.visible = false;
+    this.rayReceiver.name = MESH_NAMES.RAY_RECEIVER;
     this.scene.add(this.rayReceiver);
 
     // Mesh group
     this.meshGroup = new Group();
     this.meshGroup.position.set(0, 0.5, 0);
     this.scene.add(this.meshGroup);
+  }
+
+  /**
+   * Dispatch hierarchy updated event
+   */
+  hierarchyUpdated() {
+    dispatcher.dispatchEvent({
+      type: Events.HIERARCHY_UPDATED,
+      scene: this.scene,
+    });
   }
 
   /**
@@ -174,14 +209,25 @@ export default class Voxel3D {
   };
 
   /**
-   * Dispatch hierarchy updated event
+   * Mesh type updated listener
    */
-  hierarchyUpdated() {
-    dispatcher.dispatchEvent({
-      type: Events.HIERARCHY_UPDATE,
-      scene: this.scene,
-    });
-  }
+  onMeshTypeUpdated = (event: Event) => {
+    this.meshTypeOption = event?.option;
+  };
+
+  /**
+   * Add mesh listener
+   */
+  onAddMesh = (event: Event) => {
+    if (!this.meshTypeOption) return;
+
+    const intersectPoint = event?.intersect?.point?.toArray();
+
+    const mesh = new Voxel(this.meshTypeOption, intersectPoint);
+
+    this.meshGroup.add(mesh);
+    this.hierarchyUpdated();
+  };
 
   /**
    * Render

@@ -1,13 +1,14 @@
 import React, { FC, memo, useCallback } from 'react';
 // Types
-import { IDropdownProps, TDropdownOption } from './Dropdown.d';
+import { IDropdownProps } from './Dropdown.d';
+import { TMeshTypeOption } from '@/Types';
 // Styles
 import s from './Dropdown.module.scss';
 
 const Dropdown: FC<IDropdownProps> = ({ className, style, onChange, value, options, ...rest }) => {
   // Generate button content with option
   const generatBtnConent = useCallback(
-    (option: TDropdownOption) => (
+    (option: TMeshTypeOption) => (
       <>
         {option?.color && <span style={{ background: option.color }} />}
         <label>{option?.mesh || 'select mesh'}</label>

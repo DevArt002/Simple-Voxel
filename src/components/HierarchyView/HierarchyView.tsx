@@ -25,7 +25,7 @@ const HierarchyView: FC<IHierarchyViewProps> = ({ className, style, ...rest }) =
   const [data, setData] = useState<TreeNodeInArray[] | undefined>(undefined);
 
   // Listen when voxel3d hierarchy is updated
-  const handleHierarchyUpdate = useCallback((event: Event) => {
+  const handleHierarchyUpdated = useCallback((event: Event) => {
     const newData = generateTreeNode(event?.scene?.children || []);
 
     setData(newData);
@@ -34,13 +34,13 @@ const HierarchyView: FC<IHierarchyViewProps> = ({ className, style, ...rest }) =
   // Add/remove event listeners
   useEffect(() => {
     // Add event listeners
-    dispatcher.addEventListener(Events.HIERARCHY_UPDATE, handleHierarchyUpdate);
+    dispatcher.addEventListener(Events.HIERARCHY_UPDATED, handleHierarchyUpdated);
 
     return () => {
       // Remove event listeners
-      dispatcher.removeEventListener(Events.HIERARCHY_UPDATE, handleHierarchyUpdate);
+      dispatcher.removeEventListener(Events.HIERARCHY_UPDATED, handleHierarchyUpdated);
     };
-  }, [handleHierarchyUpdate]);
+  }, [handleHierarchyUpdated]);
 
   return (
     <div className={`${s.hierarchyView} ${className}`} style={style} {...rest}>
