@@ -1,13 +1,18 @@
-.translator {
+.rotControl {
   position: relative;
   height: fit-content;
+
+  & > p {
+    text-transform: capitalize;
+    margin: 0 10px;
+  }
 
   & .row {
     display: flex;
     justify-content: center;
     align-items: center;
 
-    & .translateBtn {
+    & .controlBtn {
       margin: 10px;
     }
   }

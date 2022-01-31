@@ -8,4 +8,6 @@ export enum Events {
   MESH_TYPE_UPDATED = 'meshTypeUpdated',
   ADD_MESH = 'addMesh',
   TRANSLATE_MESH = 'translateMesh',
+  ROTATE_MESH = 'rotateMesh',
+  REMOVE = 'remove',
 }

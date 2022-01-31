@@ -21,6 +21,16 @@ export enum ETransDir {
   RIGHT = 'right',
 }
 
+export enum ERotDir {
+  LEFT = 'left',
+  RIGHT = 'right',
+}
+
+export enum ERemove {
+  ONE = 'one',
+  ALL = 'all',
+}
+
 export type TVelDir = {
   [key in ETransDir]: Vector3;
 };

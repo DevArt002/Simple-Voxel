@@ -6,12 +6,12 @@ import { usePressHold } from '@/Hooks';
 // Voxel 3D
 import { dispatcher, Events } from '@/Voxel3D';
 // Types
-import { ITranslatorProps } from './Translator.d';
+import { ITransControlProps } from './TransControl.d';
 import { ETransDir } from '@/Types';
 // Styles
-import s from './Translator.module.scss';
+import s from './TransControl.module.scss';
 
-const Translator: FC<ITranslatorProps> = ({ className, style, ...rest }) => {
+const TransControl: FC<ITransControlProps> = ({ className, style, ...rest }) => {
   // Callback when translate button pressed
   const mouseDownCallback = useCallback((e: MouseEvent) => {
     const { name: direction } = e.target as HTMLButtonElement;
@@ -26,11 +26,12 @@ const Translator: FC<ITranslatorProps> = ({ className, style, ...rest }) => {
   const [handleMouseDown, handleMouseUp] = usePressHold(mouseDownCallback);
 
   return (
-    <div className={`${s.translator} ${className}`} style={style} {...rest}>
+    <div className={`${s.transControl} ${className}`} style={style} {...rest}>
+      <p>Translate</p>
       <div className={s.row}>
         <Button
           name={ETransDir.UP}
-          className={s.translateBtn}
+          className={s.controlBtn}
           onMouseDown={handleMouseDown}
           onMouseUp={handleMouseUp}
           onMouseLeave={handleMouseUp}>
@@ -40,7 +41,7 @@ const Translator: FC<ITranslatorProps> = ({ className, style, ...rest }) => {
       <div className={s.row}>
         <Button
           name={ETransDir.LEFT}
-          className={s.translateBtn}
+          className={s.controlBtn}
           onMouseDown={handleMouseDown}
           onMouseUp={handleMouseUp}
           onMouseLeave={handleMouseUp}>
@@ -48,7 +49,7 @@ const Translator: FC<ITranslatorProps> = ({ className, style, ...rest }) => {
         </Button>
         <Button
           name={ETransDir.DOWN}
-          className={s.translateBtn}
+          className={s.controlBtn}
           onMouseDown={handleMouseDown}
           onMouseUp={handleMouseUp}
           onMouseLeave={handleMouseUp}>
@@ -56,7 +57,7 @@ const Translator: FC<ITranslatorProps> = ({ className, style, ...rest }) => {
         </Button>
         <Button
           name={ETransDir.RIGHT}
-          className={s.translateBtn}
+          className={s.controlBtn}
           onMouseDown={handleMouseDown}
           onMouseUp={handleMouseUp}
           onMouseLeave={handleMouseUp}>
@@ -67,4 +68,4 @@ const Translator: FC<ITranslatorProps> = ({ className, style, ...rest }) => {
   );
 };
 
-export default memo(Translator);
+export default memo(TransControl);

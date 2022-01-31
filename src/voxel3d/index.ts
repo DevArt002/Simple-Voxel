@@ -38,7 +38,7 @@ export class Voxel3D {
   private meshGroup!: Group; // Group for involving primitive meshes
   private interactor!: Interactor; // Interaction helper
   private meshTypeOption: TMeshTypeOption | null; // Mesh option
-  private activeMesh: Voxel | null; // Active mesh
+  private activeMesh: Voxel | undefined; // Active mesh
 
   constructor(container: HTMLDivElement) {
     this.container = container;
@@ -47,7 +47,7 @@ export class Voxel3D {
     this.height = container.offsetHeight;
     this.aspect = this.width / this.height;
     this.meshTypeOption = null;
-    this.activeMesh = null;
+    this.activeMesh = undefined;
 
     this.init();
   }
@@ -131,6 +131,8 @@ export class Voxel3D {
     dispatcher.addEventListener(Events.MESH_TYPE_UPDATED, this.onMeshTypeUpdated);
     dispatcher.addEventListener(Events.ADD_MESH, this.onAddMesh);
     dispatcher.addEventListener(Events.TRANSLATE_MESH, this.onTranslate);
+    dispatcher.addEventListener(Events.ROTATE_MESH, this.onRotate);
+    dispatcher.addEventListener(Events.REMOVE, this.onRemove);
   };
 
   /**
@@ -141,6 +143,8 @@ export class Voxel3D {
     dispatcher.removeEventListener(Events.MESH_TYPE_UPDATED, this.onMeshTypeUpdated);
     dispatcher.removeEventListener(Events.ADD_MESH, this.onAddMesh);
     dispatcher.removeEventListener(Events.TRANSLATE_MESH, this.onTranslate);
+    dispatcher.removeEventListener(Events.ROTATE_MESH, this.onRotate);
+    dispatcher.removeEventListener(Events.REMOVE, this.onRemove);
   };
 
   /**
@@ -242,6 +246,35 @@ export class Voxel3D {
   };
 
   /**
+   * Rotate listener
+   */
+  onRotate = (e: Event) => {
+    // this.activeMesh?.translate(this.camera.matrix, e?.direction);
+  };
+
+  /**
+   * Remove listener
+   */
+  onRemove = (e: Event) => {
+    const { removeAll } = e;
+
+    // Remove all meshes, or active mesh
+    if (removeAll) {
+      for (let i = this.meshGroup.children.length - 1; i >= 0; i--) {
+        const child = (this.meshGroup.children as Voxel[])[i];
+        this.meshGroup.remove(child);
+        child.dispose();
+      }
+    } else if (this.activeMesh) {
+      this.meshGroup.remove(this.activeMesh);
+      this.activeMesh.dispose();
+      this.activeMesh = this.meshGroup.children[this.meshGroup.children.length - 1] as Voxel;
+    }
+
+    this.hierarchyUpdated();
+  };
+
+  /**
    * Render
    */
   render() {
@@ -263,7 +296,7 @@ export class Voxel3D {
     gsap.ticker.remove(this.tick);
     this.disposeEventListeners();
     this.controls.dispose();
-    (this.meshGroup.children as Voxel[]).forEach((child) => child?.dispose());
+    (this.meshGroup.children as Voxel[]).forEach((child) => child.dispose());
   }
 }
 

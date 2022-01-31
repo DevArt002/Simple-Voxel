@@ -1,6 +1,6 @@
 import React, { FC, memo, useCallback, useState } from 'react';
 // Components
-import { Dropdown, Translator } from '@/Components';
+import { Dropdown, TransControl, RotControl, RemoveControl } from '@/Components';
 // Voxel 3D
 import { dispatcher, Events } from '@/Voxel3D';
 // Types
@@ -26,13 +26,17 @@ const Panel: FC<IPanelProps> = ({ className, style, ...rest }) => {
 
   return (
     <div className={`${s.panel} ${className}`} style={style} {...rest}>
+      <TransControl className={s.mr} />
       <Dropdown
-        className={s.meshTypeDropdown}
+        className={s.mr}
         onChange={handleMeshTypeChange}
         value={activeMeshId}
         options={MESH_TYPE_OPTIONS}
       />
-      <Translator />
+      <div>
+        <RotControl />
+        <RemoveControl />
+      </div>
     </div>
   );
 };

@@ -11,6 +11,8 @@ import {
   Matrix4,
   Quaternion,
 } from 'three';
+// Helpers
+import { disposeObject } from '@/Voxel3D/helpers';
 // Types
 import { EMeshType, ETransDir, TVelDir, TMeshTypeOption } from '@/Types';
 
@@ -79,5 +81,7 @@ export class Voxel extends Mesh {
   /**
    * Dispose
    */
-  dispose() {}
+  dispose() {
+    disposeObject(this);
+  }
 }

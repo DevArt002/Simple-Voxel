@@ -1,6 +1,6 @@
 import React, { FC, memo } from 'react';
 // Types
-import { IButtonProps } from './Button.d';
+import { IButtonProps, EButtonVariants } from './Button.d';
 // Styles
 import s from './Button.module.scss';
 
@@ -12,11 +12,17 @@ const Button: FC<IButtonProps> = ({
   onMouseLeave,
   onClick,
   children,
+  variant = EButtonVariants.PRIMARY,
   ...rest
 }) => {
   return (
     <button
-      className={`${s.button} ${className}`}
+      className={`
+        ${s.button} 
+        ${variant === EButtonVariants.PRIMARY && s.primary} 
+        ${variant === EButtonVariants.SECONDARY && s.secondary} 
+        ${className}
+      `}
       style={style}
       onMouseDown={onMouseDown}
       onMouseUp={onMouseUp}
